@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="blitz_robot">
+
+    <xacro:include filename="$(find my_blitz)/urdf/ur_arm.xacro" />
+    <xacro:include filename="$(find my_blitz)/urdf/freight_body.xacro" />
+    <xacro:include filename="$(find my_blitz)/urdf/gripper/robotiq_arg2f_140_model.xacro" />
+    <xacro:include filename="$(find my_blitz)/urdf/realsense/d435.urdf.xacro" />
+
+    <xacro:sensor_d435 parent="arm_wrist_3_link" />
+
+    <link name="pillar">
+        <visual>
+            <geometry>
+                <box size="0.08 0.16 1.0"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/> <!-- 0.55 + 0.3 -->
+            <material name="LightGrey">
+                <color rgba="0.7 0.7 0.7 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.08 0.16 1.0"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="10"/>
+            <inertia ixx="0.5" ixy="0" ixz="0" iyy="0.6" iyz="0" izz="0.3" />
+        </inertial>
+    </link>
+
+    <link name="front_battery">
+        <visual>
+            <geometry>
+                <box size="0.12 0.28 0.22"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="LightGrey">
+                <color rgba="0.7 0.7 0.7 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.12 0.28 0.22"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>          
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="10"/>
+            <inertia ixx="0.5" ixy="0" ixz="0" iyy="0.6" iyz="0" izz="0.3" />
+        </inertial>
+    </link>
+
+    <link name="control_pannel">
+        <visual>
+            <geometry>
+                <box size="0.23 0.45 0.3" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="LightGrey">
+                <color rgba="0.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.23 0.45 0.3" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </collision>
+    </link>
+
+    <link name="rear_box">
+        <visual>
+            <geometry>
+                <box size="0.27 0.3 0.22" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="LightGrey">
+                <color rgba="0.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.27 0.3 0.24" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </collision>
+    </link>
+
+    <joint name="freight_pillar_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="pillar"/>
+        <axis xyz = "0 0 0"/>
+        <origin xyz="0.04 0 0.86" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="pillar_ur5_joint" type="fixed">
+        <parent link="pillar"/>
+        <child link="arm_base_link"/>
+        <axis xyz="0 0 0"/>
+        <origin xyz="0.04 0 0.1" rpy="3.1416 -1.5708 0"/>
+    </joint>
+
+    <joint name="pillar_front_battery_joint" type="fixed">
+        <parent link="pillar"/>
+        <child link="front_battery"/>
+        <axis xyz="0 0 0"/>
+        <origin xyz="0.1 0 -0.28" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="pillar_panel_joint" type="fixed">
+        <parent link="pillar"/>
+        <child link="control_pannel"/>
+        <axis xyz="0 0 0"/>
+        <origin xyz="-0.22 0 0" rpy="0 0 0" />
+    </joint>
+
+    <joint name="pillar_rear_joint" type="fixed">
+        <parent link="pillar"/>
+        <child link="rear_box"/>
+        <axis xyz="0 0 0"/>
+        <origin xyz="-0.175 0 -0.39" rpy="0 0 0" />
+    </joint>
+
+    <joint name="ur5_grip_joint" type="fixed">
+        <parent link="arm_tool0" />
+        <child link="robotiq_arg2f_base_link"/>
+        <axis xyz="0 0 0"/>
+        <origin xyz="0 0 0" rpy="0 0 2.3562"/>
+    </joint>
+
+</robot>
+
+
+
+

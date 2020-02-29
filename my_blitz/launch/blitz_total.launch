@@ -1,0 +1,11 @@
+<launch>
+
+    <include file="$(find fetch_navigation)/launch/freight_nav.launch" >
+        <arg name="map_file" value="$(find my_blitz)/115.yaml" />
+    </include>
+
+    <include file="$(find my_blitz)/launch/my_blitz.launch" />
+
+    <node name="reachability_map_loader" pkg="map_creator" type="load_reachability_map" args="$(find map_creator)/maps/blitz_arm.h5" />
+
+</launch>

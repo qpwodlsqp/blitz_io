@@ -1,0 +1,6 @@
+<launch>
+    <param name="robot_description" textfile="$(find fetch_description)/robots/freight.urdf"/>
+    <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher"/>
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find my_blitz)/freight_visualization.rviz" required="True" />
+</launch>

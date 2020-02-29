@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: my_blitz
+    relative_path: urdf/blitz.urdf
+  SRDF:
+    relative_path: config/blitz_robot.srdf
+  CONFIG:
+    author_name: SNU BI LAB
+    author_email: jykim@bi.snu.ac.kr
+    generated_timestamp: 1579770655

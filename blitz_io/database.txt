@@ -1,0 +1,10 @@
+cfg_path : /home/user/kji/darknet/cfg/yolov3.cfg
+weight_path : /home/user/kji/darknet/backup/yolov3.weights
+meta_path : /home/user/kji/darknet/cfg/coco.data
+W : 640
+H : 480
+camera_offset : 0.5,-0.1,0.98
+tcp : 0.72,-0.108,0.905
+corridor : -2.4,2.4,1.0,0.0
+kitchen : -0.1,0.1,-0.711921418941,0.7022591354
+dining : -1.1,2.18,0.0,1.0

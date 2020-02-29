@@ -1,0 +1,7 @@
+image: /home/user/catkin_ws/src/my_blitz/115.pgm
+resolution: 0.050000
+origin: [-5.364628, -3.507612, 0.000000]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196
+

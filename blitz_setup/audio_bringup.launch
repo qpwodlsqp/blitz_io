@@ -1,0 +1,9 @@
+<launch>
+
+    <include file="$(find audio_capture)/launch/capture.launch" />
+
+    <node name="soundplay_node" pkg="sound_play" type="soundplay_node.py">
+        <param name="device" value="hw:0,0"/>
+    </node>
+
+</launch>

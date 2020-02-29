@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       name="freight_body">
+
+    <!-- freight -->
+    <xacro:include filename="$(find my_blitz)/urdf/freight.urdf.xacro" />
+
+    <xacro:freight_robot prefix="" /> <!-- prefix="body_" -->
+
+</robot>

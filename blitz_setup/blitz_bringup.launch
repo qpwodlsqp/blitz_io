@@ -1,0 +1,26 @@
+<launch>
+
+    <!-- UR5 bringup -->
+    <include file="$(find ur_modern_driver)/launch/ur5_bringup.launch" >
+        <arg name="robot_ip" value="172.22.22.2" />
+    </include>
+
+    <!-- gripper bringup -->
+    <include file="$(find robotiq_2f_gripper_control)/launch/robotiq_action_server.launch" />
+
+    <!-- Moveit bringup -->
+    <include file="$(find blitz_robot_moveit_config)/launch/blitz_robot_moveit_planning_execution.launch" />
+
+    <!-- realsense is a manipulator camera -->
+    <include file="$(find realsense2_camera)/launch/rs_rgbd.launch" />
+
+    <!-- xtion camera is mounted on top -->
+    <include file="$(find openni2_launch)/launch/openni2.launch" />
+
+    <!-- Audio capture & Soundplay node -->
+    <include file="$(find audio_capture)/launch/capture.launch" />
+    <node name="soundplay_node" pkg="sound_play" type="soundplay_node.py">
+        <param name="device" value="hw:0,0" />
+    </node>
+
+</launch>

@@ -1,0 +1,134 @@
+import cv2
+import numpy as np
+import pyopenpose as op
+
+class PoseDetector:
+
+    def __init__(self, thresh=0.1):
+
+        model = '/home/user/kji/openpose_model/mpi/pose_deploy_linevec.prototxt'
+        weight = '/home/user/kji/openpose_model/mpi/pose_iter_160000.caffemodel'
+
+        caffe.set_device(0)
+        caffe.set_mode_gpu()
+        self.openpose = caffe.Net(model, weight, caffe.TEST)
+        self.thresh=thresh
+
+        # COCO model
+        self.body_list = [
+                            "Head",
+                            "Neck",
+                            "RShoulder",
+                            "RElbow",
+                            "RWrist",
+                            "LShoulder",
+                            "LElbow",
+                            "LWrist",
+                            "RHip",
+                            "RKnee",
+                            "RAnkle",
+                            "LHip",
+                            "LKnee",
+                            "LAnkle",
+                            "Chest",
+                            "Background"
+                         ]
+        self.num_points = len(self.body_list)-1
+        self.body_pairs = [
+                            ['Head','Neck'],
+                            ['Neck','RShoulder'],
+                            ['RShoulder','RElbow'],
+                            ['RElbow','RWrist'],
+                            ['Neck','LShoulder'],
+                            ['LShoulder','LElbow'],
+                            [6,7],
+                            [1,8],
+                            [8,9],
+                            [9,10],
+                            [1,11],
+                            [11,12],
+                            [12,13],
+                            [0,14],
+                            [0,15],
+                            [14,16],
+                            [15,17]
+                           ]
+
+        return
+
+
+    def get_body_points(self, heatmap, H, W, out_H, out_W):
+
+        body_points = []
+        for i in range(self.num_points):
+
+            prob_map = heatmap[i, :, :]
+            _, prob, _, point, = cv2.minMaxLoc(prob_map)
+            print(point)
+
+            #print(prob)
+            if prob >= self.thresh:
+                x = int(W * (float(point[0]) / float(out_W)))
+                y = int(H * (float(point[1]) / float(out_H)))
+                body_points.append((x, y))
+            else:
+                body_points.append(None)
+
+        return body_points
+
+
+    # visualize result
+    def visualize(self, img, body_points):
+
+        for i in range(self.num_points):
+
+            if body_points[i] is None:
+                continue
+
+            cv2.circle(img, body_points[i], 3, (0, 255, 0), thickness=-1)
+            cv2.putText(img, "{}".format(self.body_list[i]), body_points[i], cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255))
+
+        '''
+        for pair in self.body_pairs:
+
+            A = pair[0]
+            B = pair[1]
+
+            if body_points[A] is None or body_points[B] is None:
+                continue
+
+            cv2.line(img, body_points[A], body_points[B], (255, 0, 0), 2)
+        '''
+        cv2.imwrite('pose_visualize.jpg', img)
+        return
+
+
+    def predict(self):
+
+        sample_img = cv2.imread('human_pose_sample.jpg')
+        # sample_img = cv2.resize(sample_img, (512, 1024), interpolation=cv2.INTER_AREA)
+        H, W, C = sample_img.shape
+        self.openpose.blobs['image'].reshape(1, C, H, W)
+
+        # This network automatically reshape outcome to max 128 size ...
+        transformer = caffe.io.Transformer({'image': self.openpose.blobs['image'].data.shape})
+        transformer.set_transpose('image', (2,0,1))
+        #transformer.set_channel_swap('image', (2,1,0))
+
+        
+        self.openpose.blobs['image'].data[:,:,:] = transformer.preprocess('image', sample_img)
+        output = self.openpose.forward()['net_output']
+        _, _, out_H, out_W = output.shape # (N, #HeatMap, H, W)
+        print(output.shape)
+        body_points = self.get_body_points(output[0], H, W, out_H, out_W)
+
+        self.visualize(sample_img, body_points)
+
+
+
+############################################################
+
+if __name__ == '__main__':
+
+    pose_detector = PoseDetector()
+    pose_detector.predict()

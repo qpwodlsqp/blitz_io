@@ -1,0 +1,12 @@
+<launch>
+
+    <!-- realsense is a manipulator camera -->
+    <include file="$(find realsense2_camera)/launch/rs_rgbd.launch" >
+        <arg name="enable_infra1" value="false" />
+	<arg name="enable_infra2" value="false" />
+    </include>
+
+    <!-- xtion camera is mounted on top -->
+    <include file="$(find openni2_launch)/launch/openni2.launch" />
+
+</launch>

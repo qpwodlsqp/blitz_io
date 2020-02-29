@@ -1,0 +1,4 @@
+<launch>
+   <param name="robot_description" textfile="$(find my_blitz)/urdf/blitz.urdf"/>
+   <include file="$(find blitz_robot_moveit_config)/launch/move_group.launch"/>
+</launch>

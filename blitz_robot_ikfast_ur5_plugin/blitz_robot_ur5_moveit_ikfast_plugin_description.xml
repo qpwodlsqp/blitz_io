@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<library path="lib/libblitz_robot_ur5_moveit_ikfast_plugin">
+  <class base_class_type="kinematics::KinematicsBase" name="blitz_robot_ur5/IKFastKinematicsPlugin" type="blitz_robot_ur5::IKFastKinematicsPlugin">
+    <description>IKFast61 plugin for closed-form kinematics of blitz_robot ur5</description>
+  </class>
+</library>
